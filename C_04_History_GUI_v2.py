@@ -69,16 +69,33 @@ class HistoryExport:
         recent_intro_txt = (f"Below are {calc_amount} calculations "
                             "(to the nearest degree).")
 
+        # Create string from calculations list (newest calculations first)
+        newest_first_string = ""
+        newest_first_list = list(reversed(calculations))
+
+        # Last item added in outside the for loop so that the spacing is correct
+        if len(newest_first_list) <= c.MAX_CALCS:\
+
+            for item in newest_first_list[-1]:
+                newest_first_string += item + "\n"
+
+            newest_first_string += newest_first_list[-1]
+
+        # If we have more than five items
+        else:
+            for item in newest_first_list[:c.MAX_CALCS-1]:
+                newest_first_string += item + "\n"
+
+            newest_first_string += newest_first_list[c.MAX_CALCS - 1]
+
         export_instruction_txt = ("Please push <Export> to save your calculations in "
                                   "file. If the filename already exists, it will be ")
-
-        calculations = ""
 
         # Label list (label text | format | bg)
         history_labels_list = [
             ["History / Export", ("Arial", "16", "bold"), None],
             [recent_intro_txt, ("Arial", "11"), None],
-            ["Calculation list", ("Arial", "14"), calc_back],
+            [newest_first_string, ("Arial", "14"), calc_back],
             [export_instruction_txt, ("Arial", "11"), None]
         ]
 
